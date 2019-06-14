@@ -84,4 +84,14 @@
           #{openId},#{nickName},#{gender},#{language},#{city},#{province},#{country},#{avatarUrl},#{appid},#{unionId}
         )
     </insert>
+
+    <select id="haveUser" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT COUNT(openid) FROM
+        `miniapp`
+        <where>
+            <if test="openId!= null and openId != ''">
+              `openid` = #{openId}
+            </if>
+        </where>
+    </select>
 </mapper>

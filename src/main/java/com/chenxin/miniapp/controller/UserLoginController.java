@@ -28,12 +28,17 @@ public class UserLoginController {
             //存库
             user.setOpenId(openId);
             try {
-                userService.login(user);
+                //是否由用户有信息
+                if (userService.haveUser(openId) > 0) {
+                    logger.info("用户已存在！");
+                } else {
+                    userService.login(user);
+                    //删token 防止重复提交
+                    jedisCluster.del("token_" + openId);
+                }
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error("用户登陆异常", e);
             }
-            //删token 防止重复提交
-            jedisCluster.del("token_" + openId);
         }
         logger.info(user.toString());
     }
