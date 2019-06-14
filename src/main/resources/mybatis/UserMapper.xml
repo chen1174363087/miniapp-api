@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chenxin.miniapp.mapper.UserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <!--<resultMap id="BaseResultMap" type="com.chinaexpressair.miniapp.entity.DisOrder">-->
+        <!--<id column="id" property="id" />-->
+        <!--<result column="user_id" property="userId" />-->
+        <!--<result column="ord_no" property="ordNo" />-->
+        <!--<result column="flight_no" property="flightNo" />-->
+        <!--<result column="org_city_name" property="orgCityName" />-->
+        <!--<result column="dst_city_name" property="dstCityName" />-->
+        <!--<result column="board_point_name" property="boardPointName" />-->
+        <!--<result column="off_point_name" property="offPointName" />-->
+        <!--<result column="departure_time" property="departureTime" />-->
+        <!--<result column="arrival_time" property="arrivalTime" />-->
+        <!--<result column="booking_time" property="bookingTime" />-->
+        <!--<result column="total_price" property="totalPrice" />-->
+        <!--<result column="final_price" property="finalPrice" />-->
+        <!--<result column="agency_fee" property="agencyFee" />-->
+        <!--<result column="status" property="status" />-->
+        <!--<result column="refund_status" property="refundStatus" />-->
+        <!--<result column="CREATE_TIME" property="createTime" />-->
+        <!--<result column="UPDATE_TIME" property="updateTime" />-->
+        <!--<result column="VERSION" property="version" />-->
+    <!--</resultMap>-->
+
+    <!-- 通用查询结果列 -->
+    <!--<sql id="Base_Column_List">-->
+        <!--id, user_id, ord_no, flight_no, org_city_name, dst_city_name, board_point_name, off_point_name, departure_time, arrival_time, booking_time, total_price, status, refund_status, CREATE_TIME, UPDATE_TIME, VERSION-->
+    <!--</sql>-->
+
+    <!--<select id="queryMerchantOrders" resultType="java.util.Map" parameterType="java.util.Map">-->
+        <!--SELECT COUNT(1) totalCount, SUM(final_price)  sumPrice from dis_order d-->
+        <!--<where>-->
+            <!--d.user_id in (SELECT id from dis_user where  merchant_id =#{merchantId}-->
+            <!--<if test="accountType != null">-->
+                <!--and account_type =#{accountType}-->
+            <!--</if>-->
+            <!--) and d.`status` =3-->
+            <!--<if test="beginDate != null and beginDate !=''">-->
+                <!--and d.booking_time &gt;= #{beginDate}-->
+            <!--</if>-->
+            <!--<if test="endDate != null and endDate !=''">-->
+                <!--and d.booking_time &lt;= #{endDate}-->
+            <!--</if>-->
+        <!--</where>-->
+    <!--</select>-->
+
+    <!--<select id="queryNeedAutoCaneledOrders" resultType="com.chinaexpressair.miniapp.entity.DisOrder">-->
+        <!--SELECT-->
+        <!--`ord_no`        AS `ordNo`-->
+        <!--,`status`       AS `status`-->
+        <!--,`UPDATE_TIME`  AS `updateTime`-->
+        <!--FROM dis_order-->
+        <!--WHERE TIMESTAMPDIFF(minute,CREATE_TIME,NOW()) &gt;=30-->
+        <!--AND `status` = 0-->
+    <!--</select>-->
+
+    <!--<update id="updateNeedAutoCaneledOrders" parameterType="java.util.List">-->
+        <!--update dis_order-->
+        <!--set status=-->
+        <!--<foreach collection="list" item="item" index="index" separator=" " open="case" close="end">-->
+            <!--when ord_no = #{item.ordNo,jdbcType=VARCHAR} then #{item.status,jdbcType=TINYINT}-->
+        <!--</foreach>-->
+        <!--,UPDATE_TIME=-->
+        <!--<foreach collection="list" item="item" index="index" separator=" " open="case" close="end">-->
+            <!--when ord_no = #{item.ordNo,jdbcType=VARCHAR} then #{item.updateTime}-->
+        <!--</foreach>-->
+        <!--where ord_no in-->
+        <!--<foreach collection="list" index="index" item="item" separator="," open="(" close=")">-->
+            <!--#{item.ordNo,jdbcType=VARCHAR}-->
+        <!--</foreach>-->
+    <!--</update>-->
+
+    <!--<update id="updateOrderStatusPaied" parameterType="java.lang.String">-->
+        <!--UPDATE dis_order-->
+        <!--SET `status` = 1-->
+        <!--WHERE `ord_no` = #{orderNo}-->
+    <!--</update>-->
+
+    <insert id="login" parameterType="com.chenxin.miniapp.entity.User">
+        INSERT INTO `miniapp`(`openid`,`nike_name`,`gender`,`language`,`city`,`province`,`country`,`avatarUrl`,`appid`,`unionId`)VALUE (
+          #{openId},#{nickName},#{gender},#{language},#{city},#{province},#{country},#{avatarUrl},#{appid},#{unionId}
+        )
+    </insert>
+</mapper>
