@@ -94,4 +94,33 @@
             </if>
         </where>
     </select>
+
+
+    <!--resultType="hashmap" ，默认将数据库字段名映射为hashMap的键-->
+    <!--`nike_name` AS `nickName` 将数据库字段名修改作为键-->
+    <select id="listUser" resultType="hashmap">
+         SELECT
+        `openid`,
+        `nike_name` AS `nickName`,
+        `gender`,`language`,`city`,`province`,`country`,`avatarUrl`,`appid`,`unionId` FROM miniapp
+    </select>
+
+    <!--resultType="entity"-->
+    <!--`nike_name` AS `nickName` 必须能映射到存在的属性，否侧映射不成功-->
+    <select id="listUserPojo" resultType="com.chenxin.miniapp.entity.User">
+        SELECT
+        `openid`,
+        `nike_name` AS `nickName`,
+        `gender`,`language`,`city`,`province`,`country`,`avatarUrl`,`appid`,`unionId` FROM miniapp
+    </select>
+
+    <resultMap id="listUserMap" type="com.chenxin.miniapp.entity.User">
+        <id column="id" property="id" javaType="long" jdbcType="INTEGER"/>
+        <result property="nickName" column="nike_name"/>
+        <result property="openId" column="openid"/>
+    </resultMap>
+
+    <select id="userListByResultMap" resultMap="listUserMap">
+        SELECT * FROM miniapp
+    </select>
 </mapper>
